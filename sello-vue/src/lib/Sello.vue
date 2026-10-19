@@ -37,8 +37,41 @@ const vars = computed(() => ({
   '--sello-inclinacion': `${props.inclinacion}deg`,
 }))
 
-const fuenteArco = computed(() => props.tamano * 0.085)
-const fuenteCentral = computed(() => props.tamano * 0.16)
+// fuente del arco: se encoge si el texto no cabe en el semicírculo (~119 unidades)
+const fuenteArco = computed(() => {
+  const maxLen = Math.max(props.textoArriba.length, props.textoAbajo.length, 1)
+  const porAncho = 110 / (maxLen * 0.9)
+  return Math.min(0.085, porAncho) * props.tamano
+})
+
+// parte el texto en líneas de máx. `max` caracteres para que no desborde
+function partirTexto(t, max = 10) {
+  const palabras = String(t).trim().split(/\s+/)
+  const lineas = []
+  let actual = ''
+  for (const p of palabras) {
+    if (!actual) actual = p
+    else if ((actual + ' ' + p).length <= max) actual += ' ' + p
+    else {
+      lineas.push(actual)
+      actual = p
+    }
+  }
+  if (actual) lineas.push(actual)
+  return lineas
+}
+
+const lineas = computed(() => partirTexto(props.texto))
+
+// la fuente se encoge según la línea más larga para que el texto nunca salga del sello
+// (el círculo interior mide ~56 unidades del viewBox de 100)
+const fuenteCentral = computed(() => {
+  const masLarga = Math.max(...lineas.value.map((l) => l.length), 1)
+  const porAncho = 54 / (masLarga * 0.64)
+  return Math.min(props.tamano * 0.16, (porAncho / 100) * props.tamano)
+})
+
+const altoLinea = computed(() => fuenteCentral.value * 1.1)
 
 // posiciones fijas semi-aleatorias para las salpicaduras de tinta
 const salpicaduras = [
@@ -122,18 +155,20 @@ watch(() => props.estampar, sellar)
         <text
           class="sello__texto-central"
           x="50"
-          y="50"
+          :y="50 - ((lineas.length - 1) * altoLinea) / 2"
           text-anchor="middle"
           dominant-baseline="central"
           :fill="colorTextoFinal"
           :font-size="fuenteCentral"
         >
-          {{ texto }}
+          <tspan v-for="(l, i) in lineas" :key="i" x="50" :y="50 - ((lineas.length - 1) * altoLinea) / 2 + i * altoLinea">
+            {{ l }}
+          </tspan>
         </text>
       </svg>
 
-      <div v-else class="sello__rectangulo">
-        <span class="sello__texto-central">{{ texto }}</span>
+      <div v-else class="sello__rectangulo" :style="{ '--sello-fuente': `${fuenteCentral}px` }">
+        <span v-for="(l, i) in lineas" :key="i" class="sello__texto-central">{{ l }}</span>
         <span v-if="textoAbajo" class="sello__sub">{{ textoAbajo }}</span>
       </div>
     </div>

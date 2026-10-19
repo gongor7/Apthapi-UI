@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './sello.css'
 
 const SALPICADURAS = [
@@ -73,8 +73,42 @@ export default function Sello({
   }, [estampar, sellar])
 
   const colorTextoFinal = colorTexto || color
-  const fuenteArco = tamano * 0.085
-  const fuenteCentral = tamano * 0.16
+
+  // parte el texto en líneas de máx. `max` caracteres para que no desborde
+  const partirTexto = (t, max = 10) => {
+    const palabras = String(t).trim().split(/\s+/)
+    const lineas = []
+    let actual = ''
+    for (const p of palabras) {
+      if (!actual) actual = p
+      else if (actual.length + 1 + p.length <= max) actual += ' ' + p
+      else {
+        lineas.push(actual)
+        actual = p
+      }
+    }
+    if (actual) lineas.push(actual)
+    return lineas
+  }
+
+  const lineas = useMemo(() => partirTexto(texto), [texto])
+
+  // la fuente se encoge según la línea más larga para que el texto nunca salga del sello
+  // (el círculo interior mide ~56 unidades del viewBox de 100)
+  const fuenteCentral = useMemo(() => {
+    const masLarga = Math.max(...lineas.map((l) => l.length), 1)
+    const porAncho = 54 / (masLarga * 0.64)
+    return Math.min(0.16, porAncho / 100) * tamano
+  }, [lineas, tamano])
+
+  const altoLinea = fuenteCentral * 1.1
+
+  // fuente del arco: se encoge si el texto no cabe en el semicírculo (~119 unidades)
+  const fuenteArco = useMemo(() => {
+    const maxLen = Math.max(textoArriba.length, textoAbajo.length, 1)
+    const porAncho = 110 / (maxLen * 0.9)
+    return Math.min(0.085, porAncho) * tamano
+  }, [textoArriba, textoAbajo, tamano])
   const vars = {
     '--sello-size': `${tamano}px`,
     '--sello-color': color,
@@ -135,19 +169,29 @@ export default function Sello({
             </text>
             <text
               className="sello__texto-central"
-              x="50"
-              y="50"
               textAnchor="middle"
               dominantBaseline="central"
               fill={colorTextoFinal}
               fontSize={fuenteCentral}
             >
-              {texto}
+              {lineas.map((l, i) => (
+                <tspan
+                  key={i}
+                  x="50"
+                  y={50 - ((lineas.length - 1) * altoLinea) / 2 + i * altoLinea}
+                >
+                  {l}
+                </tspan>
+              ))}
             </text>
           </svg>
         ) : (
-          <div className="sello__rectangulo">
-            <span className="sello__texto-central">{texto}</span>
+          <div className="sello__rectangulo" style={{ '--sello-fuente': `${fuenteCentral}px` }}>
+            {lineas.map((l, i) => (
+              <span key={i} className="sello__texto-central">
+                {l}
+              </span>
+            ))}
             {textoAbajo && <span className="sello__sub">{textoAbajo}</span>}
           </div>
         )}
