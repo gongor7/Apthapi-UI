@@ -1,0 +1,88 @@
+/* ============================================================
+   Tinku UI — estilos del componente ChuspitaAlert
+   Cinta-notificación estilo estola andina.
+   ============================================================ */
+
+.chuspita {
+  --chuspita-color: #2563eb;
+  --chuspita-color-fondo: #eff6ff;
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 420px;
+  padding: 0.85rem 1rem;
+  padding-left: 1.4rem;
+  background: var(--chuspita-color-fondo);
+  border: 1px solid color-mix(in srgb, var(--chuspita-color) 25%, transparent);
+  border-radius: 8px;
+  color: #1e293b;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  animation: chuspita-entrada 0.45s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+}
+
+/* franja lateral tipo tejido */
+.chuspita::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 7px;
+  border-radius: 8px 0 0 8px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--chuspita-color) 0 8px,
+    color-mix(in srgb, var(--chuspita-color) 55%, #fff) 8px 16px
+  );
+}
+
+.chuspita__icono {
+  flex-shrink: 0;
+  width: 1.4rem;
+  height: 1.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--chuspita-color);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.chuspita__cuerpo { flex: 1; min-width: 0; }
+.chuspita__titulo { font-weight: 700; margin: 0 0 0.15rem; color: var(--chuspita-color); }
+.chuspita__mensaje { margin: 0; line-height: 1.45; }
+
+.chuspita__cerrar {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.15rem 0.3rem;
+  border-radius: 6px;
+}
+.chuspita__cerrar:hover { background: rgba(15, 23, 42, 0.06); }
+
+/* tipos */
+.chuspita--info    { --chuspita-color: #2563eb; --chuspita-color-fondo: #eff6ff; }
+.chuspita--exito   { --chuspita-color: #16a34a; --chuspita-color-fondo: #f0fdf4; }
+.chuspita--alerta  { --chuspita-color: #d97706; --chuspita-color-fondo: #fffbeb; }
+.chuspita--error   { --chuspita-color: #dc2626; --chuspita-color-fondo: #fef2f2; }
+
+@keyframes chuspita-entrada {
+  from { transform: translateX(-24px) scale(0.96); opacity: 0; }
+  to   { transform: translateX(0) scale(1); opacity: 1; }
+}
+
+@keyframes chuspita-salida {
+  to { transform: translateX(24px) scale(0.96); opacity: 0; }
+}
+
+.chuspita--saliendo { animation: chuspita-salida 0.25s ease-in both; }

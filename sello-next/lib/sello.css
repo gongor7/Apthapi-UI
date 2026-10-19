@@ -1,0 +1,129 @@
+/* ============================================================
+   Sello UI — estilos base del componente Sello
+   Compartido entre las versiones Vue y React (Next.js)
+   ============================================================ */
+
+.sello {
+  --sello-size: 180px;
+  --sello-color: #dc2626;
+  --sello-color-texto: var(--sello-color);
+  --sello-inclinacion: -12deg;
+  --sello-grosor: 4px;
+
+  position: relative;
+  display: inline-block;
+  width: var(--sello-size);
+  height: var(--sello-size);
+  color: var(--sello-color-texto);
+  transform: rotate(var(--sello-inclinacion));
+  user-select: none;
+  cursor: pointer;
+  filter: url(#sello-textura) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.06));
+}
+
+.sello * {
+  box-sizing: border-box;
+}
+
+/* --- animación de sellado ---------------------------------- */
+@keyframes sello-impacto {
+  0% {
+    transform: rotate(calc(var(--sello-inclinacion) - 22deg)) scale(2.6);
+    opacity: 0;
+  }
+  55% {
+    transform: rotate(var(--sello-inclinacion)) scale(0.92);
+    opacity: 1;
+  }
+  72% {
+    transform: rotate(calc(var(--sello-inclinacion) + 2deg)) scale(1.04);
+  }
+  86% {
+    transform: rotate(calc(var(--sello-inclinacion) - 1deg)) scale(0.98);
+  }
+  100% {
+    transform: rotate(var(--sello-inclinacion)) scale(1);
+  }
+}
+
+@keyframes sello-tinta {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+@keyframes sello-rebote-papel {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(3px); }
+  60% { transform: translateY(-1.5px); }
+}
+
+.sello--estampando {
+  animation: sello-impacto 0.55s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+}
+
+.sello--estampando .sello__papel {
+  animation: sello-rebote-papel 0.4s ease-out both;
+}
+
+/* salpicaduras de tinta */
+.sello__salpicadura {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--sello-color);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sello--estampando .sello__salpicadura {
+  animation: sello-tinta 0.7s ease-out forwards;
+}
+
+/* --- forma circular ---------------------------------------- */
+.sello__circulo {
+  width: 100%;
+  height: 100%;
+}
+
+.sello__arco-texto {
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.sello__texto-central {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --- forma rectangular -------------------------------------- */
+.sello__rectangulo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
+  text-align: center;
+  border: var(--sello-grosor) double var(--sello-color);
+  border-radius: 10px;
+  padding: 0.5em;
+  font-size: calc(var(--sello-size) * 0.16);
+}
+
+.sello__rectangulo .sello__sub {
+  font-size: 0.55em;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* textura de tinta irregular (filtro compartido) */
+.sello-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
