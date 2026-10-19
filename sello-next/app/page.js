@@ -48,6 +48,7 @@ export default function Home() {
   const [colorImg, setColorImg] = useState('#1d4ed8')
   const [formaImg, setFormaImg] = useState('circular')
   const [escalaImg, setEscalaImg] = useState(0.6)
+  const [quitarFondo, setQuitarFondo] = useState(true)
   const [estamparImg, setEstamparImg] = useState(0)
 
   // ---- drag & drop de imagen ----
@@ -193,6 +194,7 @@ export default function Home() {
                 color={colorImg}
                 forma={formaImg}
                 escala={escalaImg}
+                quitarFondo={quitarFondo}
                 inclinacion={inclinacion}
                 estampar={estamparImg}
               />
@@ -261,6 +263,10 @@ export default function Home() {
             <label className="pg__campo">
               <span>escala imagen ({escalaImg})</span>
               <input type="range" min="0.2" max="1" step="0.05" value={escalaImg} onChange={(e) => setEscalaImg(+e.target.value)} />
+            </label>
+            <label className="pg__campo pg__campo--check">
+              <input type="checkbox" checked={quitarFondo} onChange={(e) => setQuitarFondo(e.target.checked)} />
+              <span>quitarFondo (fondo blanco → transparente)</span>
             </label>
             <label className="pg__campo">
               <span>inclinacion ({inclinacion}°)</span>

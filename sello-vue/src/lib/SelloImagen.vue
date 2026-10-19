@@ -17,6 +17,8 @@ const props = defineProps({
   estampar: { type: Number, default: 0 },
   /** Escala de la imagen dentro del sello (0-1) */
   escala: { type: Number, default: 0.6 },
+  /** Elimina el fondo: lo claro se vuelve transparente y solo queda la tinta */
+  quitarFondo: { type: Boolean, default: true },
 })
 
 const emit = defineEmits(['sellado'])
@@ -40,12 +42,21 @@ const rgb = computed(() => {
   return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 }
 })
 
-// matriz que convierte la luminancia de la imagen al color elegido
+// matriz que tiñe la imagen conservando su dibujo (luminancia -> color)
 const matrizTinte = computed(() => [
   0.2126 * rgb.value.r, 0.7152 * rgb.value.r, 0.0722 * rgb.value.r, 0, 0,
   0.2126 * rgb.value.g, 0.7152 * rgb.value.g, 0.0722 * rgb.value.g, 0, 0,
   0.2126 * rgb.value.b, 0.7152 * rgb.value.b, 0.0722 * rgb.value.b, 0, 0,
   0, 0, 0, 1, 0,
+].join(' '))
+
+// matriz que ADEMÁS elimina el fondo: el color pasa a fijo (tinta) y el
+// alfa pasa a ser 1 - luminancia (blanco → transparente, negro → tinta)
+const matrizSinFondo = computed(() => [
+  0, 0, 0, 0, rgb.value.r,
+  0, 0, 0, 0, rgb.value.g,
+  0, 0, 0, 0, rgb.value.b,
+  -0.2126, -0.7152, -0.0722, 0, 1,
 ].join(' '))
 
 const salpicaduras = [
@@ -96,9 +107,13 @@ watch(() => props.estampar, sellar)
     <div class="sello__papel">
       <svg class="sello__circulo" viewBox="0 0 100 100">
         <defs>
-          <!-- tiñe la imagen: luminancia -> color elegido, más textura de tinta -->
-          <filter :id="`${uid}-tinte`" x="-10%" y="-10%" width="120%" height="120%">
-            <feColorMatrix type="matrix" :values="matrizTinte" result="tinte" />
+          <!-- tiñe la imagen y, si quitarFondo, lo blanco se vuelve transparente -->
+          <filter :id="`${uid}-tinte`" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+            <feColorMatrix
+              type="matrix"
+              :values="quitarFondo ? matrizSinFondo : matrizTinte"
+              result="tinte"
+            />
             <feTurbulence type="fractalNoise" baseFrequency="0.15" numOctaves="2" result="ruido" />
             <feDisplacementMap in="tinte" in2="ruido" scale="2" />
           </filter>

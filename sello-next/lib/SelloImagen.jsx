@@ -21,6 +21,7 @@ const SALPICADURAS = [
  * @param {'circular'|'rectangular'} [props.forma='circular']
  * @param {number}  [props.inclinacion=-12]   Inclinación en grados
  * @param {number}  [props.escala=0.6]        Escala de la imagen dentro del sello (0-1)
+ * @param {boolean} [props.quitarFondo=true]  Lo claro se vuelve transparente; queda solo la tinta
  * @param {number}  [props.estampar=0]        Cambia su valor para disparar un sellado
  * @param {() => void} [props.onSellado]      Callback al sellar
  */
@@ -31,6 +32,7 @@ export default function SelloImagen({
   forma = 'circular',
   inclinacion = -12,
   escala = 0.6,
+  quitarFondo = true,
   estampar = 0,
   onSellado,
 }) {
@@ -66,20 +68,30 @@ export default function SelloImagen({
     }
   }, [estampar, sellar])
 
-  // descompone el color hex y arma la matriz de tinte (luminancia -> color)
-  const matrizTinte = useMemo(() => {
+  // descompone el color hex y arma las matrices de tinte
+  const { matrizTinte, matrizSinFondo } = useMemo(() => {
     let h = color.replace('#', '')
     if (h.length === 3) h = h.split('').map((c) => c + c).join('')
     const n = parseInt(h, 16)
     const r = ((n >> 16) & 255) / 255
     const g = ((n >> 8) & 255) / 255
     const b = (n & 255) / 255
-    return [
+    // tiñe conservando el dibujo (luminancia -> color)
+    const tinte = [
       0.2126 * r, 0.7152 * r, 0.0722 * r, 0, 0,
       0.2126 * g, 0.7152 * g, 0.0722 * g, 0, 0,
       0.2126 * b, 0.7152 * b, 0.0722 * b, 0, 0,
       0, 0, 0, 1, 0,
     ].join(' ')
+    // además elimina el fondo: color fijo (tinta) y alfa = 1 - luminancia
+    // (blanco → transparente, negro → tinta)
+    const sinFondo = [
+      0, 0, 0, 0, r,
+      0, 0, 0, 0, g,
+      0, 0, 0, 0, b,
+      -0.2126, -0.7152, -0.0722, 0, 1,
+    ].join(' ')
+    return { matrizTinte: tinte, matrizSinFondo: sinFondo }
   }, [color])
 
   const vars = {
@@ -114,8 +126,8 @@ export default function SelloImagen({
       <div className="sello__papel">
         <svg className="sello__circulo" viewBox="0 0 100 100">
           <defs>
-            <filter id={`${uid}-tinte`} x="-10%" y="-10%" width="120%" height="120%">
-              <feColorMatrix type="matrix" values={matrizTinte} result="tinte" />
+            <filter id={`${uid}-tinte`} x="-10%" y="-10%" width="120%" height="120%" colorInterpolationFilters="sRGB">
+              <feColorMatrix type="matrix" values={quitarFondo ? matrizSinFondo : matrizTinte} result="tinte" />
               <feTurbulence type="fractalNoise" baseFrequency="0.15" numOctaves="2" result="ruido" />
               <feDisplacementMap in="tinte" in2="ruido" scale="2" />
             </filter>

@@ -93,15 +93,48 @@ export default function Sello({
 
   const lineas = useMemo(() => partirTexto(texto), [texto])
 
-  // la fuente se encoge según la línea más larga para que el texto nunca salga del sello
-  // (el círculo interior mide ~56 unidades del viewBox de 100)
-  const fuenteCentral = useMemo(() => {
-    const masLarga = Math.max(...lineas.map((l) => l.length), 1)
-    const porAncho = 54 / (masLarga * 0.64)
-    return Math.min(0.16, porAncho / 100) * tamano
-  }, [lineas, tamano])
+  // Fuente del texto central en unidades del viewBox (0-100). Se mide el
+  // texto REAL renderizado y se encoge hasta caber en el círculo interior
+  // (r=26): garantiza centrado y que nunca desborde.
+  const FUENTE_BASE = 16
+  const textoRef = useRef(null)
+  const [fuenteUnidades, setFuenteUnidades] = useState(FUENTE_BASE)
 
+  useEffect(() => {
+    const medir = () => {
+      const texto = textoRef.current
+      if (!texto || !texto.children.length) {
+        setFuenteUnidades(FUENTE_BASE)
+        return
+      }
+      let factor = 1
+      for (const t of texto.children) {
+        const ancho = t.getComputedTextLength()
+        if (!ancho) continue
+        const dy = Math.abs(parseFloat(t.getAttribute('y')) - 50)
+        // ancho máximo disponible a esa altura del círculo (cuerda)
+        const maxAncho = 2 * Math.sqrt(Math.max(26 * 26 - dy * dy, 1))
+        factor = Math.min(factor, maxAncho / ancho)
+      }
+      // también debe caber verticalmente
+      let unidades = Math.min(FUENTE_BASE * factor, 50 / (lineas.length * 1.1))
+      setFuenteUnidades(Math.max(unidades, 4))
+    }
+    // doble frame: asegura el texto renderizado antes de medir
+    const r1 = requestAnimationFrame(() => medir())
+    return () => cancelAnimationFrame(r1)
+  }, [texto, tamano, forma, lineas])
+
+  const fuenteCentral = fuenteUnidades
   const altoLinea = fuenteCentral * 1.1
+
+  // fuente para la forma rectangular (por fórmula; el contenedor envuelve solo)
+  const fuenteRectangular = useMemo(() => {
+    const masLarga = Math.max(...lineas.map((l) => l.length), 1)
+    const porAncho = 82 / (masLarga * 0.62)
+    const porAlto = 88 / (lineas.length * 1.15)
+    return Math.min(FUENTE_BASE, porAncho, porAlto)
+  }, [lineas])
 
   // fuente del arco: se encoge si el texto no cabe en el semicírculo (~119 unidades)
   const fuenteArco = useMemo(() => {
@@ -168,6 +201,7 @@ export default function Sello({
               </textPath>
             </text>
             <text
+              ref={textoRef}
               className="sello__texto-central"
               textAnchor="middle"
               dominantBaseline="central"
@@ -186,7 +220,7 @@ export default function Sello({
             </text>
           </svg>
         ) : (
-          <div className="sello__rectangulo" style={{ '--sello-fuente': `${fuenteCentral}px` }}>
+          <div className="sello__rectangulo" style={{ '--sello-fuente': `${(fuenteRectangular / 100) * tamano}px` }}>
             {lineas.map((l, i) => (
               <span key={i} className="sello__texto-central">
                 {l}

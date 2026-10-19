@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import './sello.css'
 
 const props = defineProps({
@@ -63,15 +63,48 @@ function partirTexto(t, max = 10) {
 
 const lineas = computed(() => partirTexto(props.texto))
 
-// la fuente se encoge según la línea más larga para que el texto nunca salga del sello
-// (el círculo interior mide ~56 unidades del viewBox de 100)
-const fuenteCentral = computed(() => {
-  const masLarga = Math.max(...lineas.value.map((l) => l.length), 1)
-  const porAncho = 54 / (masLarga * 0.64)
-  return Math.min(props.tamano * 0.16, (porAncho / 100) * props.tamano)
-})
+// Fuente del texto central, medida en unidades del viewBox (0-100).
+// Se mide el texto REAL renderizado y se encoge hasta que quepa en el
+// círculo interior (r=26): garantiza centrado y que nunca desborde.
+const FUENTE_BASE = 16
+const textoRef = ref(null)
+const fuenteUnidades = ref(FUENTE_BASE)
 
+const fuenteCentral = computed(() => fuenteUnidades.value)
 const altoLinea = computed(() => fuenteCentral.value * 1.1)
+
+function medirTexto() {
+  nextTick(() => {
+    const texto = textoRef.value
+    if (!texto || !texto.children.length) {
+      fuenteUnidades.value = FUENTE_BASE
+      return
+    }
+    let factor = 1
+    for (const t of texto.children) {
+      const ancho = t.getComputedTextLength()
+      if (!ancho) continue
+      const dy = Math.abs(parseFloat(t.getAttribute('y')) - 50)
+      // ancho máximo disponible a esa altura del círculo (cuerda)
+      const maxAncho = 2 * Math.sqrt(Math.max(26 * 26 - dy * dy, 1))
+      factor = Math.min(factor, maxAncho / ancho)
+    }
+    // también debe caber verticalmente
+    let unidades = Math.min(FUENTE_BASE * factor, 50 / (lineas.value.length * 1.1))
+    fuenteUnidades.value = Math.max(unidades, 4)
+  })
+}
+
+onMounted(medirTexto)
+watch([() => props.texto, () => props.tamano, () => props.forma], medirTexto, { flush: 'post' })
+
+// fuente para la forma rectangular (hecho por fórmula; el contenedor envuelve solo)
+const fuenteRectangular = computed(() => {
+  const masLarga = Math.max(...lineas.value.map((l) => l.length), 1)
+  const porAncho = 82 / (masLarga * 0.62)
+  const porAlto = 88 / (lineas.value.length * 1.15)
+  return Math.min(FUENTE_BASE, porAncho, porAlto)
+})
 
 // posiciones fijas semi-aleatorias para las salpicaduras de tinta
 const salpicaduras = [
@@ -153,6 +186,7 @@ watch(() => props.estampar, sellar)
           </textPath>
         </text>
         <text
+          ref="textoRef"
           class="sello__texto-central"
           x="50"
           :y="50 - ((lineas.length - 1) * altoLinea) / 2"
@@ -167,7 +201,7 @@ watch(() => props.estampar, sellar)
         </text>
       </svg>
 
-      <div v-else class="sello__rectangulo" :style="{ '--sello-fuente': `${fuenteCentral}px` }">
+      <div v-else class="sello__rectangulo" :style="{ '--sello-fuente': `${(fuenteRectangular / 100) * tamano}px` }">
         <span v-for="(l, i) in lineas" :key="i" class="sello__texto-central">{{ l }}</span>
         <span v-if="textoAbajo" class="sello__sub">{{ textoAbajo }}</span>
       </div>

@@ -160,6 +160,13 @@ body { margin: 0; background: #f8fafc; color: #0f172a; }
   gap: 2rem;
 }
 
+.pg__campo--check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pg__campo--check input { width: 1rem; height: 1rem; }
+
 .pg__drop {
   margin-top: 1rem;
   border: 2px dashed #94a3b8;

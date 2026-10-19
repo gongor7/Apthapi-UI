@@ -57,6 +57,7 @@ const tamanoImg = ref(180)
 const colorImg = ref('#1d4ed8')
 const formaImg = ref('circular')
 const escalaImg = ref(0.6)
+const quitarFondo = ref(true)
 const estamparImg = ref(0)
 
 const codigoImagen = computed(() => `<SelloImagen
@@ -206,6 +207,7 @@ function sellar() {
             :color="colorImg"
             :forma="formaImg"
             :escala="escalaImg"
+            :quitar-fondo="quitarFondo"
             :inclinacion="inclinacion"
             :estampar="estamparImg"
           />
@@ -274,6 +276,11 @@ function sellar() {
         <label class="pg__campo">
           <span>escala imagen ({{ escalaImg }})</span>
           <input v-model.number="escalaImg" type="range" min="0.2" max="1" step="0.05" />
+        </label>
+
+        <label class="pg__campo pg__campo--check">
+          <input v-model="quitarFondo" type="checkbox" />
+          <span>quitar-fondo (fondo blanco → transparente)</span>
         </label>
 
         <label class="pg__campo">
@@ -545,6 +552,13 @@ body { margin: 0; background: #f8fafc; color: #0f172a; }
   flex-direction: column;
   gap: 2rem;
 }
+
+.pg__campo--check {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+.pg__campo--check input { width: 1rem; height: 1rem; }
 
 .pg__drop {
   margin-top: 1rem;
