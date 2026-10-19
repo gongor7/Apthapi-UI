@@ -68,6 +68,30 @@ const codigoImagen = computed(() => `<SelloImagen
   :inclinacion="${inclinacion.value}"
 />`)
 
+// ---- drag & drop de imagen ----
+const arrastrando = ref(false)
+const errorImagen = ref('')
+
+function cargarArchivo(file) {
+  errorImagen.value = ''
+  if (!file || !file.type.startsWith('image/')) {
+    errorImagen.value = 'Ese archivo no es una imagen (jpg, png, svg, webp…).'
+    return
+  }
+  const lector = new FileReader()
+  lector.onload = () => (imagen.value = lector.result)
+  lector.readAsDataURL(file)
+}
+
+function alSoltar(e) {
+  arrastrando.value = false
+  cargarArchivo(e.dataTransfer?.files?.[0])
+}
+
+function alSeleccionar(e) {
+  cargarArchivo(e.target.files?.[0])
+}
+
 const usarColorTexto = computed(() => colorTexto.value !== color.value)
 
 const codigo = computed(() => {
@@ -186,6 +210,23 @@ function sellar() {
             :estampar="estamparImg"
           />
         </div>
+        <div
+          class="pg__drop"
+          :class="{ 'pg__drop--activa': arrastrando }"
+          @dragover.prevent="arrastrando = true"
+          @dragleave.prevent="arrastrando = false"
+          @drop.prevent="alSoltar"
+        >
+          <p v-if="arrastrando" class="pg__drop__texto">¡Suelta la imagen aquí! 📥</p>
+          <template v-else>
+            <p class="pg__drop__texto">🩼 Arrastra cualquier imagen aquí (jpg, png, svg, webp)</p>
+            <label class="pg__drop__btn">
+              o haz clic para elegir un archivo
+              <input type="file" accept="image/*" hidden @change="alSeleccionar" />
+            </label>
+          </template>
+        </div>
+        <p v-if="errorImagen" class="pg__error">{{ errorImagen }}</p>
         <button class="pg__btn" @click="estamparImg++">Sellar</button>
       </section>
 
@@ -503,6 +544,33 @@ body { margin: 0; background: #f8fafc; color: #0f172a; }
 .pg__papel--tramites {
   flex-direction: column;
   gap: 2rem;
+}
+
+.pg__drop {
+  margin-top: 1rem;
+  border: 2px dashed #94a3b8;
+  border-radius: 10px;
+  padding: 1.1rem 1rem;
+  text-align: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+.pg__drop--activa {
+  border-color: #0f172a;
+  background: #f1f5f9;
+}
+.pg__drop__texto { margin: 0 0 0.5rem; font-size: 0.88rem; color: #475569; }
+.pg__drop__btn {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2563eb;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.pg__error {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: #dc2626;
 }
 
 .pg__acciones {

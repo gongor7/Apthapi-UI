@@ -50,6 +50,27 @@ export default function Home() {
   const [escalaImg, setEscalaImg] = useState(0.6)
   const [estamparImg, setEstamparImg] = useState(0)
 
+  // ---- drag & drop de imagen ----
+  const [arrastrando, setArrastrando] = useState(false)
+  const [errorImagen, setErrorImagen] = useState('')
+
+  const cargarArchivo = (file) => {
+    setErrorImagen('')
+    if (!file || !file.type.startsWith('image/')) {
+      setErrorImagen('Ese archivo no es una imagen (jpg, png, svg, webp…).')
+      return
+    }
+    const lector = new FileReader()
+    lector.onload = () => setImagen(lector.result)
+    lector.readAsDataURL(file)
+  }
+
+  const alSoltar = (e) => {
+    e.preventDefault()
+    setArrastrando(false)
+    cargarArchivo(e.dataTransfer?.files?.[0])
+  }
+
   const codigoImagen = useMemo(
     () => `<SelloImagen\n  imagen="…"\n  tamano={${tamanoImg}}\n  color="${colorImg}"\n  forma="${formaImg}"\n  escala={${escalaImg}}\n  inclinacion={${inclinacion}}\n/>`,
     [tamanoImg, colorImg, formaImg, escalaImg, inclinacion]
@@ -176,6 +197,31 @@ export default function Home() {
                 estampar={estamparImg}
               />
             </div>
+            <div
+              className={`pg__drop${arrastrando ? ' pg__drop--activa' : ''}`}
+              onDragOver={(e) => {
+                e.preventDefault()
+                setArrastrando(true)
+              }}
+              onDragLeave={(e) => {
+                e.preventDefault()
+                setArrastrando(false)
+              }}
+              onDrop={alSoltar}
+            >
+              {arrastrando ? (
+                <p className="pg__drop__texto">¡Suelta la imagen aquí! 📥</p>
+              ) : (
+                <>
+                  <p className="pg__drop__texto">🩼 Arrastra cualquier imagen aquí (jpg, png, svg, webp)</p>
+                  <label className="pg__drop__btn">
+                    o haz clic para elegir un archivo
+                    <input type="file" accept="image/*" hidden onChange={(e) => cargarArchivo(e.target.files?.[0])} />
+                  </label>
+                </>
+              )}
+            </div>
+            {errorImagen && <p className="pg__error">{errorImagen}</p>}
             <button className="pg__btn" onClick={() => setEstamparImg((e) => e + 1)}>
               Sellar
             </button>
