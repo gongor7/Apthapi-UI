@@ -192,12 +192,12 @@ watch(() => props.estampar, sellar)
         <circle cx="50" cy="50" r="47" fill="none" :stroke="color" stroke-width="3" />
         <circle cx="50" cy="50" r="42.5" fill="none" :stroke="color" stroke-width="1.5" />
         <circle cx="50" cy="50" r="28" fill="none" :stroke="color" stroke-width="1.5" />
-        <text ref="arcoSupRef" class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco">
+        <text ref="arcoSupRef" class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco" dominant-baseline="central">
           <textPath href="#arco-superior" startOffset="50%" text-anchor="middle">
             {{ textoArriba }}
           </textPath>
         </text>
-        <text ref="arcoInfRef" class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco">
+        <text ref="arcoInfRef" class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco" dominant-baseline="central">
           <textPath href="#arco-inferior" startOffset="50%" text-anchor="middle">
             {{ textoAbajo }}
           </textPath>

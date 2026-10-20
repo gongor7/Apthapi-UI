@@ -205,12 +205,12 @@ export default function Sello({
             <circle cx="50" cy="50" r="47" fill="none" stroke={color} strokeWidth="3" />
             <circle cx="50" cy="50" r="42.5" fill="none" stroke={color} strokeWidth="1.5" />
             <circle cx="50" cy="50" r="28" fill="none" stroke={color} strokeWidth="1.5" />
-            <text ref={arcoSupRef} className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco}>
+            <text ref={arcoSupRef} className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco} dominantBaseline="central">
               <textPath href="#arco-superior" startOffset="50%" textAnchor="middle">
                 {textoArriba}
               </textPath>
             </text>
-            <text ref={arcoInfRef} className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco}>
+            <text ref={arcoInfRef} className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco} dominantBaseline="central">
               <textPath href="#arco-inferior" startOffset="50%" textAnchor="middle">
                 {textoAbajo}
               </textPath>
