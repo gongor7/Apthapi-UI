@@ -8,7 +8,21 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="es">
-      <body>{children}</body>
+      <body>
+        <nav className="nav">
+          <a className="nav__marca" href="/">
+            🔖 Apthapi UI
+          </a>
+          <div className="nav__links">
+            <a href="/">Inicio</a>
+            <a href="/docs">Documentación</a>
+            <a href="https://github.com/gongor7/Apthapi-UI" target="_blank" rel="noreferrer">
+              GitHub ↗
+            </a>
+          </div>
+        </nav>
+        {children}
+      </body>
     </html>
   )
 }

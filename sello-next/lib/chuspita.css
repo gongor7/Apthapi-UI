@@ -1,88 +1,161 @@
 /* ============================================================
-   Tinku UI — estilos del componente ChuspitaAlert
-   Cinta-notificación estilo estola andina.
+   Apthapi UI — estilos del componente ChuspitaAlert
+   Notificación institucional con banda tejida andina,
+   barra de progreso, acción y pausa al pasar el mouse.
    ============================================================ */
 
 .chuspita {
   --chuspita-color: #2563eb;
   --chuspita-color-fondo: #eff6ff;
+  --chuspita-radio: 10px;
 
   position: relative;
   display: flex;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: 0.8rem;
   width: 100%;
-  max-width: 420px;
-  padding: 0.85rem 1rem;
-  padding-left: 1.4rem;
-  background: var(--chuspita-color-fondo);
-  border: 1px solid color-mix(in srgb, var(--chuspita-color) 25%, transparent);
-  border-radius: 8px;
+  max-width: 440px;
+  padding: 0.9rem 1.1rem 1rem 1.7rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0)) padding-box,
+    var(--chuspita-color-fondo);
+  border: 1px solid color-mix(in srgb, var(--chuspita-color) 22%, transparent);
+  border-radius: var(--chuspita-radio);
   color: #1e293b;
   font-size: 0.9rem;
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-  animation: chuspita-entrada 0.45s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.05),
+    0 8px 24px -8px color-mix(in srgb, var(--chuspita-color) 35%, transparent);
+  animation: chuspita-entrada 0.5s cubic-bezier(0.22, 1.4, 0.36, 1) both;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 
-/* franja lateral tipo tejido */
+.chuspita:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 2px 4px rgba(15, 23, 42, 0.06),
+    0 14px 32px -8px color-mix(in srgb, var(--chuspita-color) 45%, transparent);
+}
+
+/* --- banda lateral tejida (doble franja + puntitos de bordado) --- */
 .chuspita::before {
   content: '';
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 7px;
-  border-radius: 8px 0 0 8px;
-  background: repeating-linear-gradient(
-    -45deg,
-    var(--chuspita-color) 0 8px,
-    color-mix(in srgb, var(--chuspita-color) 55%, #fff) 8px 16px
-  );
+  width: 10px;
+  background:
+    radial-gradient(circle at 5px 4px, color-mix(in srgb, var(--chuspita-color) 60%, #fff) 1.3px, transparent 1.4px) 0 0 / 10px 8px repeat-y,
+    repeating-linear-gradient(
+      -45deg,
+      var(--chuspita-color) 0 7px,
+      color-mix(in srgb, var(--chuspita-color) 45%, #fff) 7px 14px
+    );
+  border-right: 2px solid color-mix(in srgb, var(--chuspita-color) 70%, #fff);
 }
 
+/* --- ícono en círculo con anillo --- */
 .chuspita__icono {
   flex-shrink: 0;
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 1.9rem;
+  height: 1.9rem;
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: var(--chuspita-color);
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 800;
+  background: color-mix(in srgb, var(--chuspita-color) 14%, #fff);
+  color: var(--chuspita-color);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--chuspita-color) 30%, transparent);
 }
+.chuspita__icono svg { width: 1.05rem; height: 1.05rem; }
 
 .chuspita__cuerpo { flex: 1; min-width: 0; }
-.chuspita__titulo { font-weight: 700; margin: 0 0 0.15rem; color: var(--chuspita-color); }
-.chuspita__mensaje { margin: 0; line-height: 1.45; }
+.chuspita__titulo {
+  font-weight: 700;
+  margin: 0 0 0.15rem;
+  color: color-mix(in srgb, var(--chuspita-color) 80%, #0f172a);
+  letter-spacing: 0.01em;
+}
+.chuspita__mensaje { margin: 0; line-height: 1.5; color: #475569; }
+
+/* --- botón de acción --- */
+.chuspita__accion {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--chuspita-color);
+  padding: 0.3rem 0.75rem;
+  border-radius: 7px;
+  margin: 0.35rem 0 0.1rem;
+  transition: filter 0.15s, transform 0.1s;
+}
+.chuspita__accion:hover { filter: brightness(1.1); }
+.chuspita__accion:active { transform: scale(0.96); }
 
 .chuspita__cerrar {
   flex-shrink: 0;
   border: none;
   background: transparent;
-  color: #64748b;
+  color: #94a3b8;
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  padding: 0.15rem 0.3rem;
+  padding: 0.2rem 0.35rem;
   border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
 }
-.chuspita__cerrar:hover { background: rgba(15, 23, 42, 0.06); }
+.chuspita__cerrar:hover { background: color-mix(in srgb, var(--chuspita-color) 12%, #fff); color: var(--chuspita-color); }
 
-/* tipos */
+/* --- barra de progreso de auto-cierre --- */
+.chuspita__progreso {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: color-mix(in srgb, var(--chuspita-color) 15%, #fff);
+}
+.chuspita__progreso::after {
+  content: '';
+  display: block;
+  height: 100%;
+  background: var(--chuspita-color);
+  border-radius: 0 3px 3px 0;
+  animation: chuspita-progreso linear forwards;
+  animation-duration: var(--chuspita-duracion, 5s);
+}
+
+/* pausa el auto-cierre mientras el usuario lee */
+.chuspita:hover .chuspita__progreso::after,
+.chuspita:focus-within .chuspita__progreso::after {
+  animation-play-state: paused;
+}
+
+/* --- tipos --- */
 .chuspita--info    { --chuspita-color: #2563eb; --chuspita-color-fondo: #eff6ff; }
 .chuspita--exito   { --chuspita-color: #16a34a; --chuspita-color-fondo: #f0fdf4; }
 .chuspita--alerta  { --chuspita-color: #d97706; --chuspita-color-fondo: #fffbeb; }
 .chuspita--error   { --chuspita-color: #dc2626; --chuspita-color-fondo: #fef2f2; }
 
+/* --- animaciones --- */
 @keyframes chuspita-entrada {
-  from { transform: translateX(-24px) scale(0.96); opacity: 0; }
-  to   { transform: translateX(0) scale(1); opacity: 1; }
+  0%   { transform: translateX(-28px) scale(0.94); opacity: 0; }
+  60%  { transform: translateX(2px) scale(1.01); }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
 }
 
 @keyframes chuspita-salida {
-  to { transform: translateX(24px) scale(0.96); opacity: 0; }
+  to { transform: translateX(28px) scale(0.94); opacity: 0; max-height: 0; margin-top: -0.6rem; }
 }
 
-.chuspita--saliendo { animation: chuspita-salida 0.25s ease-in both; }
+@keyframes chuspita-progreso {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+.chuspita--saliendo { animation: chuspita-salida 0.3s ease-in both; }

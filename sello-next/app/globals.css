@@ -1,5 +1,219 @@
 @import '../lib/sello.css';
 
+/* ===== navegación ===== */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+}
+.nav__marca {
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: #0f172a;
+  text-decoration: none;
+}
+.nav__links { display: flex; gap: 1.25rem; }
+.nav__links a {
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.nav__links a:hover { color: #0f172a; }
+
+/* ===== landing ===== */
+.landing { max-width: 1060px; margin: 0 auto; padding: 0 1.5rem; }
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  padding: 3rem 0 4rem;
+}
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; padding-top: 1.5rem; }
+}
+
+.hero__badge {
+  display: inline-block;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 1.1rem;
+}
+
+.hero__titulo {
+  margin: 0 0 1rem;
+  font-size: 3.4rem;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+.hero__degradado {
+  background: linear-gradient(90deg, #dc2626, #d97706, #16a34a, #2563eb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__idea {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: #475569;
+  margin: 0 0 1.6rem;
+  max-width: 46ch;
+}
+.hero__idea strong { color: #0f172a; }
+
+.hero__acciones { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+.boton {
+  display: inline-block;
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.12s, box-shadow 0.15s;
+}
+.boton:active { transform: scale(0.97); }
+.boton--principal {
+  color: #fff;
+  background: linear-gradient(90deg, #dc2626, #d97706);
+  box-shadow: 0 8px 20px -8px rgba(220, 38, 38, 0.5);
+}
+.boton--secundario {
+  color: #0f172a;
+  background: #fff;
+  border-color: #e2e8f0;
+}
+.boton--fantasma {
+  color: #475569;
+  background: transparent;
+  border-color: transparent;
+}
+.boton--fantasma:hover { color: #0f172a; }
+
+.hero__demo { text-align: center; }
+.hero__papel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 340px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  background-image: repeating-linear-gradient(#fff 0 31px, #eef2f7 31px 32px);
+  box-shadow: 0 20px 50px -20px rgba(15, 23, 42, 0.15);
+  overflow: hidden;
+}
+.hero__papel .chuspita {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  max-width: 300px;
+}
+.hero__toast-btn {
+  margin-top: 1rem;
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.seccion__titulo {
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.3rem;
+}
+.seccion__sub { color: #64748b; margin: 0 0 1.6rem; }
+
+.componentes { padding: 1rem 0 3rem; }
+.componentes__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+.tarjeta {
+  display: block;
+  padding: 1.3rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.tarjeta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #dc2626, #d97706, #16a34a, #2563eb);
+}
+.tarjeta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px -16px rgba(15, 23, 42, 0.18);
+}
+.tarjeta h3 { margin: 0.4rem 0 0.5rem; font-family: 'Courier New', monospace; }
+.tarjeta p { margin: 0 0 0.8rem; font-size: 0.88rem; line-height: 1.55; color: #475569; }
+.tarjeta code {
+  display: block;
+  font-size: 0.72rem;
+  color: #94a3b8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.instalacion { padding: 1rem 0 3.5rem; }
+.instalacion__bloques { display: grid; gap: 0.8rem; max-width: 560px; }
+.instalacion__bloque {
+  background: #0f172a;
+  border-radius: 12px;
+  padding: 0.9rem 1.1rem;
+}
+.instalacion__bloque span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+.instalacion__bloque pre {
+  margin: 0.35rem 0 0;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  overflow-x: auto;
+}
+
+.pie {
+  border-top: 1px solid #e2e8f0;
+  padding: 1.6rem 0 2.2rem;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+.pie a { color: #2563eb; }
+
+/* ===== playground (docs) ===== */
+
 :root {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color-scheme: light;

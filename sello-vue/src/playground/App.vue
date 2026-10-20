@@ -32,9 +32,9 @@ const codigoTramites = computed(() => `<CargoRecepcion
   color="${colorFolio.value}"
 />`)
 
-function lanzarAlerta(tipo, titulo, mensaje) {
+function lanzarAlerta(tipo, titulo, mensaje, accion = null) {
   const id = ++alertaId
-  alertas.value.push({ id, tipo, titulo, mensaje })
+  alertas.value.push({ id, tipo, titulo, mensaje, accion })
   setTimeout(() => {
     alertas.value = alertas.value.filter((a) => a.id !== id)
   }, 6000)
@@ -302,6 +302,7 @@ function sellar() {
             :titulo="a.titulo"
             :mensaje="a.mensaje"
             :tipo="a.tipo"
+            :accion="a.accion"
             :duracion="5000"
           />
         </div>
@@ -311,7 +312,7 @@ function sellar() {
         <h2>Disparar notificaciones</h2>
         <div class="pg__disparos">
           <button class="pg__disparo pg__disparo--info" @click="lanzarAlerta('info', 'Trámite recibido', 'Su documento fue registrado en ventanilla única.')">Info</button>
-          <button class="pg__disparo pg__disparo--exito" @click="lanzarAlerta('exito', 'Sello aplicado', 'El documento fue sellado exitosamente.')">Éxito</button>
+          <button class="pg__disparo pg__disparo--exito" @click="lanzarAlerta('exito', 'Sello aplicado', 'El documento fue sellado exitosamente.', 'Ver trámite')">Éxito</button>
           <button class="pg__disparo pg__disparo--alerta" @click="lanzarAlerta('alerta', 'Folio incompleto', 'Faltan 2 páginas por legalizar en el expediente.')">Alerta</button>
           <button class="pg__disparo pg__disparo--error" @click="lanzarAlerta('error', 'Trámite rechazado', 'El documento no cumple los requisitos de la entidad.')">Error</button>
         </div>
