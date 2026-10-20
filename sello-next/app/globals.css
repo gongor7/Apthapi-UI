@@ -206,10 +206,11 @@
 
 .pie {
   margin-top: 2.5rem;
-  background: #0f172a;
+  background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 18px;
   padding: 1.8rem 2rem 0;
-  color: #94a3b8;
+  color: #64748b;
   overflow: hidden;
 }
 
@@ -237,9 +238,9 @@
   color: #fff;
   border-radius: 50%;
   background: linear-gradient(135deg, #dc2626, #d97706, #16a34a, #2563eb);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 3px #f1f5f9;
 }
-.pie__autor strong { color: #f1f5f9; font-size: 1.02rem; }
+.pie__autor strong { color: #0f172a; font-size: 1.02rem; }
 .pie__rol { margin: 0.25rem 0 0; font-size: 0.82rem; }
 
 .pie__redes { display: flex; gap: 0.7rem; }
@@ -252,15 +253,15 @@
   text-decoration: none;
   padding: 0.45rem 0.95rem;
   border-radius: 999px;
-  color: #cbd5e1;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 .pie__redes a:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.25);
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
 }
 
 .pie__legal {
@@ -270,11 +271,11 @@
   gap: 1.2rem;
   flex-wrap: wrap;
   padding: 0.9rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #e2e8f0;
   font-size: 0.78rem;
 }
-.pie__marca { color: #f1f5f9; font-weight: 700; }
-.pie__legal a { color: #7dd3fc; text-decoration: none; }
+.pie__marca { color: #0f172a; font-weight: 700; }
+.pie__legal a { color: #2563eb; text-decoration: none; }
 .pie__legal a:hover { text-decoration: underline; }
 
 /* ===== playground (docs) ===== */
