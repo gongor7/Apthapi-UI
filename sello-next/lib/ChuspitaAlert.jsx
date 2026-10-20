@@ -113,6 +113,9 @@ export default function ChuspitaAlert({
           ✕
         </button>
       )}
+      <span className="chuspita__pompon chuspita__pompon--sup" aria-hidden="true" />
+      <span className="chuspita__pompon chuspita__pompon--inf" aria-hidden="true" />
+      <span className="chuspita__pompon chuspita__pompon--der" aria-hidden="true" />
       {duracion > 0 && <span className="chuspita__progreso" aria-hidden="true" />}
     </div>
   )

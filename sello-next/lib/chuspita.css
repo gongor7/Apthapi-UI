@@ -23,7 +23,6 @@
   border-radius: var(--chuspita-radio);
   color: #1e293b;
   font-size: 0.9rem;
-  overflow: hidden;
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.05),
     0 8px 24px -8px color-mix(in srgb, var(--chuspita-color) 35%, transparent);
@@ -159,3 +158,77 @@
 }
 
 .chuspita--saliendo { animation: chuspita-salida 0.3s ease-in both; }
+
+/* --- pompones de lana, como en las chuspitas de verdad --- */
+.chuspita__pompon {
+  --pompon: var(--chuspita-color);
+  --pompon-claro: color-mix(in srgb, var(--chuspita-color) 45%, #fff);
+  --pompon-oscuro: color-mix(in srgb, var(--chuspita-color) 70%, #1e293b);
+
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  pointer-events: none;
+  transform-origin: 50% -8px;
+  animation: chuspita-pompon 2.6s ease-in-out infinite;
+  /* vellón de lana: núcleo con luz + motitas alrededor */
+  background:
+    radial-gradient(circle at 34% 30%, var(--pompon-claro) 0 24%, transparent 25%),
+    radial-gradient(circle at 68% 72%, var(--pompon-oscuro) 0 20%, transparent 21%),
+    var(--pompon);
+  box-shadow:
+    2.4px 0.6px 0 -0.6px var(--pompon),
+    -2.4px 0.6px 0 -0.6px var(--pompon),
+    0.8px 2.4px 0 -0.6px var(--pompon),
+    -0.8px 2.4px 0 -0.6px var(--pompon),
+    2px -1.8px 0 -0.6px var(--pompon-claro),
+    -2px -1.8px 0 -0.6px var(--pompon-claro),
+    1.6px 2.2px 0 -0.6px var(--pompon-oscuro),
+    -2.2px -0.8px 0 -0.6px var(--pompon-oscuro);
+}
+
+/* cordel del que cuelga el pompon */
+.chuspita__pompon::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 2.5px;
+  height: 9px;
+  transform: translateX(-50%);
+  border-radius: 2px;
+  background:
+    repeating-linear-gradient(180deg, var(--pompon) 0 3px, var(--pompon-claro) 3px 6px);
+}
+
+/* posicionamiento: cuelgan de las esquinas de la banda tejida */
+.chuspita__pompon--sup {
+  left: 1px;
+  top: -7px;
+}
+.chuspita__pompon--inf {
+  left: 1px;
+  bottom: -7px;
+  animation-delay: 0.9s;
+}
+.chuspita__pompon--der {
+  right: -6px;
+  top: 50%;
+  margin-top: -9px;
+  animation-delay: 1.6s;
+}
+
+.chuspita__pompon--der::before {
+  top: 50%;
+  left: -8px;
+  width: 9px;
+  height: 2.5px;
+  transform: translateY(-50%);
+  background: repeating-linear-gradient(90deg, var(--pompon) 0 3px, var(--pompon-claro) 3px 6px);
+}
+
+@keyframes chuspita-pompon {
+  0%, 100% { transform: rotate(-7deg); }
+  50%      { transform: rotate(7deg); }
+}

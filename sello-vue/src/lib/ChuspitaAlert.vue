@@ -102,6 +102,9 @@ watch(() => props.mostrar, () => {
       <button v-if="accion" class="chuspita__accion" @click="alAccion">{{ accion }}</button>
     </div>
     <button v-if="cerrable" class="chuspita__cerrar" aria-label="Cerrar" @click="cerrar">✕</button>
+    <span class="chuspita__pompon chuspita__pompon--sup" aria-hidden="true" />
+    <span class="chuspita__pompon chuspita__pompon--inf" aria-hidden="true" />
+    <span class="chuspita__pompon chuspita__pompon--der" aria-hidden="true" />
     <span v-if="duracion > 0" class="chuspita__progreso" aria-hidden="true" />
   </div>
 </template>
