@@ -33,5 +33,9 @@
   },
   "peerDependencies": {
     "react": ">=18"
+  },
+  "author": {
+    "name": "Cristhian Leandro Góngora Torrez",
+    "url": "https://www.linkedin.com/in/cristhian-leandro-g%C3%B3ngora-torrez-537496215/"
   }
 }

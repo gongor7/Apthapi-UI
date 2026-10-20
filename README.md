@@ -55,4 +55,8 @@ import { Sello, CargoRecepcion } from '../lib'
 - [ ] `SelloVerificable` — sello con QR de autenticidad
 - [ ] `ActaTemplate` — plantillas de actas y certificados
 
+---
+
+Creado por **[Cristhian Leandro Góngora Torrez](https://www.linkedin.com/in/cristhian-leandro-g%C3%B3ngora-torrez-537496215/)** — desarrollador full stack, Bolivia 🇧🇴 · [GitHub](https://github.com/gongor7)
+
 Hecho con 🇧🇴 en Bolivia.

@@ -138,10 +138,25 @@ export default function Home() {
       </section>
 
       <footer className="pie">
-        <p>
+        <div className="pie__autor">
+          <span className="pie__avatar">CG</span>
+          <div>
+            <strong>Cristhian Leandro Góngora Torrez</strong>
+            <p className="pie__rol">Creador de Apthapi UI · Desarrollador Full Stack · Bolivia 🇧🇴</p>
+            <div className="pie__redes">
+              <a href="https://www.linkedin.com/in/cristhian-leandro-g%C3%B3ngora-torrez-537496215/" target="_blank" rel="noreferrer">
+                in · LinkedIn
+              </a>
+              <a href="https://github.com/gongor7" target="_blank" rel="noreferrer">
+                GitHub ↗
+              </a>
+            </div>
+          </div>
+        </div>
+        <p className="pie__legal">
           🔖 <strong>Apthapi UI</strong> — la reunión andina de componentes. Hecho con 🇧🇴 ·{' '}
           <a href="https://github.com/gongor7/Apthapi-UI" target="_blank" rel="noreferrer">
-            GitHub
+            Repositorio
           </a>
         </p>
       </footer>

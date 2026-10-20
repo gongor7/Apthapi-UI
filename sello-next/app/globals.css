@@ -212,6 +212,40 @@
 }
 .pie a { color: #2563eb; }
 
+.pie__autor {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.8rem 0 1.4rem;
+}
+.pie__avatar {
+  flex-shrink: 0;
+  width: 3.4rem;
+  height: 3.4rem;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, #dc2626, #d97706, #16a34a, #2563eb);
+}
+.pie__autor strong { color: #0f172a; font-size: 1rem; }
+.pie__rol { margin: 0.15rem 0 0.4rem; font-size: 0.82rem; }
+.pie__redes { display: flex; gap: 0.9rem; }
+.pie__redes a {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #475569;
+}
+.pie__redes a:hover { border-color: #2563eb; color: #2563eb; }
+
+.pie__legal { margin: 0.8rem 0 0; }
+
 /* ===== playground (docs) ===== */
 
 :root {
