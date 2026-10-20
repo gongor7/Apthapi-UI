@@ -1,0 +1,37 @@
+{
+  "name": "apthapi-ui-vue",
+  "version": "0.1.0",
+  "description": "Componentes bolivianos que digitalizan trámites institucionales: sellos, cargos, folios y notificaciones. Versión Vue 3.",
+  "type": "module",
+  "main": "./apthapi-ui-vue.esm.js",
+  "module": "./apthapi-ui-vue.esm.js",
+  "exports": {
+    ".": "./apthapi-ui-vue.esm.js",
+    "./apthapi-ui-vue.css": "./apthapi-ui-vue.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "apthapi-ui-vue.esm.js",
+    "apthapi-ui-vue.css"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "keywords": [
+    "bolivia",
+    "sellos",
+    "tramites",
+    "institucional",
+    "vue",
+    "components",
+    "ui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gongor7/Apthapi-UI.git"
+  },
+  "peerDependencies": {
+    "vue": ">=3.2"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "name": "apthapi-ui",
+  "version": "0.1.0",
+  "description": "Componentes bolivianos que digitalizan trámites institucionales: sellos, cargos, folios y notificaciones. Versión React.",
+  "type": "module",
+  "main": "./apthapi-ui.esm.js",
+  "module": "./apthapi-ui.esm.js",
+  "exports": {
+    ".": "./apthapi-ui.esm.js",
+    "./apthapi-ui.css": "./apthapi-ui.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "apthapi-ui.esm.js",
+    "apthapi-ui.css"
+  ],
+  "sideEffects": [
+    "*.css"
+  ],
+  "keywords": [
+    "bolivia",
+    "sellos",
+    "tramites",
+    "institucional",
+    "react",
+    "components",
+    "ui"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gongor7/Apthapi-UI.git"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}
