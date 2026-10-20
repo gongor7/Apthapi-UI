@@ -136,12 +136,27 @@ export default function Sello({
     return Math.min(FUENTE_BASE, porAncho, porAlto)
   }, [lineas])
 
-  // fuente del arco: se encoge si el texto no cabe en el semicírculo (~119 unidades)
-  const fuenteArco = useMemo(() => {
-    const maxLen = Math.max(textoArriba.length, textoAbajo.length, 1)
-    const porAncho = 110 / (maxLen * 0.9)
-    return Math.min(0.085, porAncho) * tamano
-  }, [textoArriba, textoAbajo, tamano])
+  // fuente de los arcos: se MIDE el texto renderizado sobre el arco
+  // (longitud del semicírculo ≈ 119 unidades) y se encoge hasta caber
+  const FUENTE_ARCO_BASE = 8.5
+  const arcoSupRef = useRef(null)
+  const arcoInfRef = useRef(null)
+  const [fuenteArco, setFuenteArco] = useState(FUENTE_ARCO_BASE)
+
+  useEffect(() => {
+    const medir = () => {
+      let factor = 1
+      for (const t of [arcoSupRef.current, arcoInfRef.current]) {
+        if (!t) continue
+        const ancho = t.getComputedTextLength()
+        if (!ancho) continue
+        factor = Math.min(factor, (119.4 * 0.86) / ancho)
+      }
+      setFuenteArco(Math.max(FUENTE_ARCO_BASE * factor, 3))
+    }
+    const r1 = requestAnimationFrame(() => medir())
+    return () => cancelAnimationFrame(r1)
+  }, [textoArriba, textoAbajo, tamano, forma])
   const vars = {
     '--sello-size': `${tamano}px`,
     '--sello-color': color,
@@ -190,12 +205,12 @@ export default function Sello({
             <circle cx="50" cy="50" r="47" fill="none" stroke={color} strokeWidth="3" />
             <circle cx="50" cy="50" r="42.5" fill="none" stroke={color} strokeWidth="1.5" />
             <circle cx="50" cy="50" r="28" fill="none" stroke={color} strokeWidth="1.5" />
-            <text className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco}>
+            <text ref={arcoSupRef} className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco}>
               <textPath href="#arco-superior" startOffset="50%" textAnchor="middle">
                 {textoArriba}
               </textPath>
             </text>
-            <text className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco}>
+            <text ref={arcoInfRef} className="sello__arco-texto" fill={colorTextoFinal} fontSize={fuenteArco}>
               <textPath href="#arco-inferior" startOffset="50%" textAnchor="middle">
                 {textoAbajo}
               </textPath>

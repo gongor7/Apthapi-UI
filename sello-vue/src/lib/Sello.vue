@@ -37,12 +37,25 @@ const vars = computed(() => ({
   '--sello-inclinacion': `${props.inclinacion}deg`,
 }))
 
-// fuente del arco: se encoge si el texto no cabe en el semicírculo (~119 unidades)
-const fuenteArco = computed(() => {
-  const maxLen = Math.max(props.textoArriba.length, props.textoAbajo.length, 1)
-  const porAncho = 110 / (maxLen * 0.9)
-  return Math.min(0.085, porAncho) * props.tamano
-})
+// fuente de los arcos: se MIDE el texto renderizado sobre el arco
+// (longitud del semicírculo ≈ 119 unidades) y se encoge hasta caber
+const FUENTE_ARCO_BASE = 8.5
+const arcoSupRef = ref(null)
+const arcoInfRef = ref(null)
+const fuenteArco = ref(FUENTE_ARCO_BASE)
+
+function medirArcos() {
+  nextTick(() => {
+    let factor = 1
+    for (const t of [arcoSupRef.value, arcoInfRef.value]) {
+      if (!t) continue
+      const ancho = t.getComputedTextLength()
+      if (!ancho) continue
+      factor = Math.min(factor, (119.4 * 0.86) / ancho)
+    }
+    fuenteArco.value = Math.max(FUENTE_ARCO_BASE * factor, 3)
+  })
+}
 
 // parte el texto en líneas de máx. `max` caracteres para que no desborde
 function partirTexto(t, max = 10) {
@@ -95,8 +108,12 @@ function medirTexto() {
   })
 }
 
-onMounted(medirTexto)
+onMounted(() => {
+  medirTexto()
+  medirArcos()
+})
 watch([() => props.texto, () => props.tamano, () => props.forma], medirTexto, { flush: 'post' })
+watch([() => props.textoArriba, () => props.textoAbajo, () => props.tamano], medirArcos, { flush: 'post' })
 
 // fuente para la forma rectangular (hecho por fórmula; el contenedor envuelve solo)
 const fuenteRectangular = computed(() => {
@@ -175,12 +192,12 @@ watch(() => props.estampar, sellar)
         <circle cx="50" cy="50" r="47" fill="none" :stroke="color" stroke-width="3" />
         <circle cx="50" cy="50" r="42.5" fill="none" :stroke="color" stroke-width="1.5" />
         <circle cx="50" cy="50" r="28" fill="none" :stroke="color" stroke-width="1.5" />
-        <text class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco">
+        <text ref="arcoSupRef" class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco">
           <textPath href="#arco-superior" startOffset="50%" text-anchor="middle">
             {{ textoArriba }}
           </textPath>
         </text>
-        <text class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco">
+        <text ref="arcoInfRef" class="sello__arco-texto" :fill="colorTextoFinal" :font-size="fuenteArco">
           <textPath href="#arco-inferior" startOffset="50%" text-anchor="middle">
             {{ textoAbajo }}
           </textPath>
