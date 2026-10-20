@@ -1,4 +1,4 @@
-import { ref as M, computed as _, onMounted as L, watch as E, openBlock as o, createElementBlock as n, normalizeStyle as w, normalizeClass as z, createElementVNode as t, Fragment as B, renderList as D, toDisplayString as g, createCommentVNode as F, nextTick as P, onBeforeUnmount as G } from "vue";
+import { ref as M, computed as y, onMounted as R, watch as w, openBlock as l, createElementBlock as n, normalizeStyle as N, normalizeClass as I, createElementVNode as e, Fragment as B, renderList as D, toDisplayString as p, createCommentVNode as L, nextTick as P, onBeforeUnmount as G } from "vue";
 const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
   key: 0,
   class: "sello__circulo",
@@ -7,11 +7,11 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
   href: "#arco-superior",
   startOffset: "50%",
   "text-anchor": "middle"
-}, ae = ["fill", "font-size"], le = {
+}, ae = ["fill", "font-size"], oe = {
   href: "#arco-inferior",
   startOffset: "50%",
   "text-anchor": "middle"
-}, oe = ["y", "fill", "font-size"], ne = ["y"], se = {
+}, le = ["y", "fill", "font-size"], ne = ["y"], se = {
   key: 0,
   class: "sello__sub"
 }, V = 8.5, q = 16, Pe = {
@@ -37,58 +37,58 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
     estampar: { type: Number, default: 0 }
   },
   emits: ["sellado"],
-  setup(e, { expose: x, emit: $ }) {
-    const a = e, b = $, l = M(!1);
+  setup(t, { expose: x, emit: $ }) {
+    const a = t, b = $, o = M(!1);
     let c = null;
-    const s = _(() => a.colorTexto || a.color), p = _(() => ({
+    const s = y(() => a.colorTexto || a.color), g = y(() => ({
       "--sello-size": `${a.tamano}px`,
       "--sello-color": a.color,
       "--sello-color-texto": s.value,
       "--sello-inclinacion": `${a.inclinacion}deg`
-    })), i = M(null), d = M(null), C = M(V);
+    })), i = M(null), d = M(null), E = M(V);
     function r() {
       P(() => {
         let k = 1;
-        for (const m of [i.value, d.value]) {
-          if (!m) continue;
-          const u = m.getComputedTextLength();
+        for (const f of [i.value, d.value]) {
+          if (!f) continue;
+          const u = f.getComputedTextLength();
           u && (k = Math.min(k, 119.4 * 0.86 / u));
         }
-        C.value = Math.max(V * k, 3);
+        E.value = Math.max(V * k, 3);
       });
     }
-    function A(k, m = 10) {
+    function T(k, f = 10) {
       const u = String(k).trim().split(/\s+/), h = [];
       let S = "";
-      for (const N of u)
-        S ? (S + " " + N).length <= m ? S += " " + N : (h.push(S), S = N) : S = N;
+      for (const F of u)
+        S ? (S + " " + F).length <= f ? S += " " + F : (h.push(S), S = F) : S = F;
       return S && h.push(S), h;
     }
-    const f = _(() => A(a.texto)), v = M(null), y = M(q), T = _(() => y.value), I = _(() => T.value * 1.1);
+    const m = y(() => T(a.texto)), v = M(null), _ = M(q), C = y(() => _.value), A = y(() => C.value * 1.1);
     function O() {
       P(() => {
         const k = v.value;
         if (!k || !k.children.length) {
-          y.value = q;
+          _.value = q;
           return;
         }
-        let m = 1;
+        let f = 1;
         for (const h of k.children) {
           const S = h.getComputedTextLength();
           if (!S) continue;
-          const N = Math.abs(parseFloat(h.getAttribute("y")) - 50), Z = 2 * Math.sqrt(Math.max(676 - N * N, 1));
-          m = Math.min(m, Z / S);
+          const F = Math.abs(parseFloat(h.getAttribute("y")) - 50), Z = 2 * Math.sqrt(Math.max(676 - F * F, 1));
+          f = Math.min(f, Z / S);
         }
-        let u = Math.min(q * m, 50 / (f.value.length * 1.1));
-        y.value = Math.max(u, 4);
+        let u = Math.min(q * f, 50 / (m.value.length * 1.1));
+        _.value = Math.max(u, 4);
       });
     }
-    L(() => {
+    R(() => {
       O(), r();
-    }), E([() => a.texto, () => a.tamano, () => a.forma], O, { flush: "post" }), E([() => a.textoArriba, () => a.textoAbajo, () => a.tamano], r, { flush: "post" });
-    const H = _(() => {
-      const m = 82 / (Math.max(...f.value.map((h) => h.length), 1) * 0.62), u = 88 / (f.value.length * 1.15);
-      return Math.min(q, m, u);
+    }), w([() => a.texto, () => a.tamano, () => a.forma], O, { flush: "post" }), w([() => a.textoArriba, () => a.textoAbajo, () => a.tamano], r, { flush: "post" });
+    const H = y(() => {
+      const f = 82 / (Math.max(...m.value.map((h) => h.length), 1) * 0.62), u = 88 / (m.value.length * 1.15);
+      return Math.min(q, f, u);
     }), U = [
       { x: -6, y: 8, s: 0.1, d: 0.3 },
       { x: 102, y: 12, s: 0.07, d: 0.36 },
@@ -98,30 +98,30 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
       { x: 52, y: 104, s: 0.09, d: 0.32 }
     ];
     function j() {
-      clearTimeout(c), l.value = !1, requestAnimationFrame(() => {
-        l.value = !0, b("sellado"), c = setTimeout(() => l.value = !1, 800);
+      clearTimeout(c), o.value = !1, requestAnimationFrame(() => {
+        o.value = !0, b("sellado"), c = setTimeout(() => o.value = !1, 800);
       });
     }
-    return x({ sellar: j }), L(j), E(() => a.estampar, j), (k, m) => (o(), n("div", {
-      class: z(["sello", { "sello--estampando": l.value }]),
-      style: w(p.value),
+    return x({ sellar: j }), R(j), w(() => a.estampar, j), (k, f) => (l(), n("div", {
+      class: I(["sello", { "sello--estampando": o.value }]),
+      style: N(g.value),
       role: "img",
-      "aria-label": `Sello: ${e.texto}`,
+      "aria-label": `Sello: ${t.texto}`,
       onClick: j
     }, [
-      m[1] || (m[1] = t("svg", {
+      f[1] || (f[1] = e("svg", {
         class: "sello-defs",
         "aria-hidden": "true"
       }, [
-        t("defs", null, [
-          t("filter", { id: "sello-textura" }, [
-            t("feTurbulence", {
+        e("defs", null, [
+          e("filter", { id: "sello-textura" }, [
+            e("feTurbulence", {
               type: "fractalNoise",
               baseFrequency: "0.9",
               numOctaves: "2",
               result: "ruido"
             }),
-            t("feDisplacementMap", {
+            e("feDisplacementMap", {
               in: "SourceGraphic",
               in2: "ruido",
               scale: "2.5"
@@ -129,102 +129,102 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
           ])
         ])
       ], -1)),
-      (o(), n(B, null, D(U, (u, h) => t("span", {
+      (l(), n(B, null, D(U, (u, h) => e("span", {
         key: h,
         class: "sello__salpicadura",
-        style: w({
+        style: N({
           left: `${u.x}%`,
           top: `${u.y}%`,
-          width: `${u.s * e.tamano}px`,
-          height: `${u.s * e.tamano}px`,
+          width: `${u.s * t.tamano}px`,
+          height: `${u.s * t.tamano}px`,
           animationDelay: `${u.d}s`
         })
       }, null, 4)), 64)),
-      t("div", Y, [
-        e.forma === "circular" ? (o(), n("svg", Q, [
-          m[0] || (m[0] = t("defs", null, [
-            t("path", {
+      e("div", Y, [
+        t.forma === "circular" ? (l(), n("svg", Q, [
+          f[0] || (f[0] = e("defs", null, [
+            e("path", {
               id: "arco-superior",
               d: "M 50,50 m -38,0 a 38,38 0 1,1 76,0",
               fill: "none"
             }),
-            t("path", {
+            e("path", {
               id: "arco-inferior",
               d: "M 50,50 m -38,0 a 38,38 0 1,0 76,0",
               fill: "none"
             })
           ], -1)),
-          t("circle", {
+          e("circle", {
             cx: "50",
             cy: "50",
             r: "47",
             fill: "none",
-            stroke: e.color,
+            stroke: t.color,
             "stroke-width": "3"
           }, null, 8, X),
-          t("circle", {
+          e("circle", {
             cx: "50",
             cy: "50",
             r: "42.5",
             fill: "none",
-            stroke: e.color,
+            stroke: t.color,
             "stroke-width": "1.5"
           }, null, 8, K),
-          t("circle", {
+          e("circle", {
             cx: "50",
             cy: "50",
             r: "28",
             fill: "none",
-            stroke: e.color,
+            stroke: t.color,
             "stroke-width": "1.5"
           }, null, 8, W),
-          t("text", {
+          e("text", {
             ref_key: "arcoSupRef",
             ref: i,
             class: "sello__arco-texto",
             fill: s.value,
-            "font-size": C.value,
+            "font-size": E.value,
             "dominant-baseline": "central"
           }, [
-            t("textPath", te, g(e.textoArriba), 1)
+            e("textPath", te, p(t.textoArriba), 1)
           ], 8, ee),
-          t("text", {
+          e("text", {
             ref_key: "arcoInfRef",
             ref: d,
             class: "sello__arco-texto",
             fill: s.value,
-            "font-size": C.value,
+            "font-size": E.value,
             "dominant-baseline": "central"
           }, [
-            t("textPath", le, g(e.textoAbajo), 1)
+            e("textPath", oe, p(t.textoAbajo), 1)
           ], 8, ae),
-          t("text", {
+          e("text", {
             ref_key: "textoRef",
             ref: v,
             class: "sello__texto-central",
             x: "50",
-            y: 50 - (f.value.length - 1) * I.value / 2,
+            y: 50 - (m.value.length - 1) * A.value / 2,
             "text-anchor": "middle",
             "dominant-baseline": "central",
             fill: s.value,
-            "font-size": T.value
+            "font-size": C.value
           }, [
-            (o(!0), n(B, null, D(f.value, (u, h) => (o(), n("tspan", {
+            (l(!0), n(B, null, D(m.value, (u, h) => (l(), n("tspan", {
               key: h,
               x: "50",
-              y: 50 - (f.value.length - 1) * I.value / 2 + h * I.value
-            }, g(u), 9, ne))), 128))
-          ], 8, oe)
-        ])) : (o(), n("div", {
+              y: 50 - (m.value.length - 1) * A.value / 2 + h * A.value
+            }, p(u), 9, ne))), 128))
+          ], 8, le)
+        ])) : (l(), n("div", {
           key: 1,
           class: "sello__rectangulo",
-          style: w({ "--sello-fuente": `${H.value / 100 * e.tamano}px` })
+          style: N({ "--sello-fuente": `${H.value / 100 * t.tamano}px` })
         }, [
-          (o(!0), n(B, null, D(f.value, (u, h) => (o(), n("span", {
+          (l(!0), n(B, null, D(m.value, (u, h) => (l(), n("span", {
             key: h,
             class: "sello__texto-central"
-          }, g(u), 1))), 128)),
-          e.textoAbajo ? (o(), n("span", se, g(e.textoAbajo), 1)) : F("", !0)
+          }, p(u), 1))), 128)),
+          t.textoAbajo ? (l(), n("span", se, p(t.textoAbajo), 1)) : L("", !0)
         ], 4))
       ])
     ], 14, J));
@@ -232,19 +232,19 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
 }, ie = { class: "sello__papel" }, re = {
   class: "sello__circulo",
   viewBox: "0 0 100 100"
-}, ce = ["id"], ue = ["values"], de = ["id"], fe = {
+}, ce = ["id"], ue = ["values"], de = ["id"], me = {
   key: 0,
   cx: "50",
   cy: "50",
   r: "47"
-}, me = {
+}, fe = {
   key: 1,
   x: "4",
   y: "4",
   width: "92",
   height: "92",
   rx: "8"
-}, he = ["stroke"], ge = ["stroke"], pe = ["clip-path"], ve = ["href", "x", "y", "width", "height", "filter"], Ve = {
+}, he = ["stroke"], pe = ["stroke"], ge = ["clip-path"], ve = ["href", "x", "y", "width", "height", "filter"], Ve = {
   __name: "SelloImagen",
   props: {
     /** URL o data-URI de la imagen a sellar */
@@ -265,20 +265,20 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
     quitarFondo: { type: Boolean, default: !0 }
   },
   emits: ["sellado"],
-  setup(e, { expose: x, emit: $ }) {
-    const a = e, b = $, l = `si-${Math.random().toString(36).slice(2, 8)}`, c = M(!1);
+  setup(t, { expose: x, emit: $ }) {
+    const a = t, b = $, o = `si-${Math.random().toString(36).slice(2, 8)}`, c = M(!1);
     let s = null;
-    const p = _(() => ({
+    const g = y(() => ({
       "--sello-size": `${a.tamano}px`,
       "--sello-color": a.color,
       "--sello-color-texto": a.color,
       "--sello-inclinacion": `${a.inclinacion}deg`
-    })), i = _(() => {
-      let f = a.color.replace("#", "");
-      f.length === 3 && (f = f.split("").map((y) => y + y).join(""));
-      const v = parseInt(f, 16);
+    })), i = y(() => {
+      let m = a.color.replace("#", "");
+      m.length === 3 && (m = m.split("").map((_) => _ + _).join(""));
+      const v = parseInt(m, 16);
       return { r: (v >> 16 & 255) / 255, g: (v >> 8 & 255) / 255, b: (v & 255) / 255 };
-    }), d = _(() => [
+    }), d = y(() => [
       0.2126 * i.value.r,
       0.7152 * i.value.r,
       0.0722 * i.value.r,
@@ -299,7 +299,7 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
       0,
       1,
       0
-    ].join(" ")), C = _(() => [
+    ].join(" ")), E = y(() => [
       0,
       0,
       0,
@@ -326,72 +326,72 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
       { x: -10, y: 88, s: 0.08, d: 0.42 },
       { x: 98, y: 92, s: 0.12, d: 0.26 }
     ];
-    function A() {
+    function T() {
       clearTimeout(s), c.value = !1, requestAnimationFrame(() => {
         c.value = !0, b("sellado"), s = setTimeout(() => c.value = !1, 800);
       });
     }
-    return x({ sellar: A }), L(A), E(() => a.estampar, A), (f, v) => (o(), n("div", {
-      class: z(["sello", { "sello--estampando": c.value }]),
-      style: w(p.value),
+    return x({ sellar: T }), R(T), w(() => a.estampar, T), (m, v) => (l(), n("div", {
+      class: I(["sello", { "sello--estampando": c.value }]),
+      style: N(g.value),
       role: "img",
       "aria-label": "Sello de imagen",
-      onClick: A
+      onClick: T
     }, [
-      (o(), n(B, null, D(r, (y, T) => t("span", {
-        key: T,
+      (l(), n(B, null, D(r, (_, C) => e("span", {
+        key: C,
         class: "sello__salpicadura",
-        style: w({
-          left: `${y.x}%`,
-          top: `${y.y}%`,
-          width: `${y.s * e.tamano}px`,
-          height: `${y.s * e.tamano}px`,
-          animationDelay: `${y.d}s`
+        style: N({
+          left: `${_.x}%`,
+          top: `${_.y}%`,
+          width: `${_.s * t.tamano}px`,
+          height: `${_.s * t.tamano}px`,
+          animationDelay: `${_.d}s`
         })
       }, null, 4)), 64)),
-      t("div", ie, [
-        (o(), n("svg", re, [
-          t("defs", null, [
-            t("filter", {
-              id: `${l}-tinte`,
+      e("div", ie, [
+        (l(), n("svg", re, [
+          e("defs", null, [
+            e("filter", {
+              id: `${o}-tinte`,
               x: "-10%",
               y: "-10%",
               width: "120%",
               height: "120%",
               "color-interpolation-filters": "sRGB"
             }, [
-              t("feColorMatrix", {
+              e("feColorMatrix", {
                 type: "matrix",
-                values: e.quitarFondo ? C.value : d.value,
+                values: t.quitarFondo ? E.value : d.value,
                 result: "tinte"
               }, null, 8, ue),
-              v[0] || (v[0] = t("feTurbulence", {
+              v[0] || (v[0] = e("feTurbulence", {
                 type: "fractalNoise",
                 baseFrequency: "0.15",
                 numOctaves: "2",
                 result: "ruido"
               }, null, -1)),
-              v[1] || (v[1] = t("feDisplacementMap", {
+              v[1] || (v[1] = e("feDisplacementMap", {
                 in: "tinte",
                 in2: "ruido",
                 scale: "2"
               }, null, -1))
             ], 8, ce),
-            t("clipPath", {
-              id: `${l}-clip`
+            e("clipPath", {
+              id: `${o}-clip`
             }, [
-              e.forma === "circular" ? (o(), n("circle", fe)) : (o(), n("rect", me))
+              t.forma === "circular" ? (l(), n("circle", me)) : (l(), n("rect", fe))
             ], 8, de)
           ]),
-          e.forma === "circular" ? (o(), n("circle", {
+          t.forma === "circular" ? (l(), n("circle", {
             key: 0,
             cx: "50",
             cy: "50",
             r: "47",
             fill: "none",
-            stroke: e.color,
+            stroke: t.color,
             "stroke-width": "3"
-          }, null, 8, he)) : (o(), n("rect", {
+          }, null, 8, he)) : (l(), n("rect", {
             key: 1,
             x: "4",
             y: "4",
@@ -399,30 +399,30 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
             height: "92",
             rx: "8",
             fill: "none",
-            stroke: e.color,
+            stroke: t.color,
             "stroke-width": "3"
-          }, null, 8, ge)),
-          t("g", {
-            "clip-path": `url(#${l}-clip)`
+          }, null, 8, pe)),
+          e("g", {
+            "clip-path": `url(#${o}-clip)`
           }, [
-            t("image", {
-              href: e.imagen,
-              x: 50 - e.escala * 50,
-              y: 50 - e.escala * 50,
-              width: e.escala * 100,
-              height: e.escala * 100,
-              filter: `url(#${l}-tinte)`,
+            e("image", {
+              href: t.imagen,
+              x: 50 - t.escala * 50,
+              y: 50 - t.escala * 50,
+              width: t.escala * 100,
+              height: t.escala * 100,
+              filter: `url(#${o}-tinte)`,
               preserveAspectRatio: "xMidYMid meet"
             }, null, 8, ve)
-          ], 8, pe)
+          ], 8, ge)
         ]))
       ])
     ], 6));
   }
-}, ye = {
+}, _e = {
   class: "chuspita__icono",
   "aria-hidden": "true"
-}, _e = {
+}, ye = {
   viewBox: "0 0 24 24",
   fill: "none",
   stroke: "currentColor",
@@ -455,67 +455,79 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
     mostrar: { type: Number, default: 0 }
   },
   emits: ["cerrada", "accion"],
-  setup(e, { emit: x }) {
-    const $ = e, a = x, b = M(!0), l = M(!1);
-    let c = [], s = 0, p = 0;
+  setup(t, { emit: x }) {
+    const $ = t, a = x, b = M(!0), o = M(!1);
+    let c = [], s = 0, g = 0;
     function i() {
       c.forEach(clearTimeout), c = [];
     }
-    function d(T) {
-      i(), !(T <= 0) && (s = T, p = Date.now(), c.push(setTimeout(v, T + 300)));
+    function d(C) {
+      i(), !(C <= 0) && (s = C, g = Date.now(), c.push(setTimeout(v, C + 300)));
     }
-    function C() {
-      s <= 0 || (i(), s = Math.max(s - (Date.now() - p), 0));
+    function E() {
+      s <= 0 || (i(), s = Math.max(s - (Date.now() - g), 0));
     }
     function r() {
-      s > 0 && b.value && !l.value && d(s);
+      s > 0 && b.value && !o.value && d(s);
     }
-    const A = {
+    const T = {
       info: "M12 8H12.01M11 12H12V16M21 12A9 9 0 1 1 3 12A9 9 0 0 1 21 12Z",
       exito: "M20 6L9 17L4 12",
       alerta: "M12 9V13M12 17H12.01M10.3 3.9L1.8 18A2 2 0 0 0 3.5 21H20.5A2 2 0 0 0 22.2 18L13.7 3.9A2 2 0 0 0 10.3 3.9Z",
       error: "M15 9L9 15M9 9L15 15M21 12A9 9 0 1 1 3 12A9 9 0 0 1 21 12Z"
-    }, f = _(() => A[$.tipo] || A.info);
+    }, m = y(() => T[$.tipo] || T.info);
     function v() {
-      l.value || (l.value = !0, c.push(setTimeout(() => {
+      o.value || (o.value = !0, c.push(setTimeout(() => {
         b.value = !1, a("cerrada");
       }, 300)));
     }
-    function y() {
+    function _() {
       a("accion");
     }
-    return L(() => d($.duracion)), G(i), E(() => $.mostrar, () => {
-      i(), b.value = !0, l.value = !1, d($.duracion);
-    }), (T, I) => b.value ? (o(), n("div", {
+    return R(() => d($.duracion)), G(i), w(() => $.mostrar, () => {
+      i(), b.value = !0, o.value = !1, d($.duracion);
+    }), (C, A) => b.value ? (l(), n("div", {
       key: 0,
-      class: z(["chuspita", [`chuspita--${e.tipo}`, { "chuspita--saliendo": l.value }]]),
-      style: w(e.duracion > 0 ? { "--chuspita-duracion": `${e.duracion}ms` } : null),
+      class: I(["chuspita", [`chuspita--${t.tipo}`, { "chuspita--saliendo": o.value }]]),
+      style: N(t.duracion > 0 ? { "--chuspita-duracion": `${t.duracion}ms` } : null),
       role: "alert",
-      onMouseenter: C,
+      onMouseenter: E,
       onMouseleave: r
     }, [
-      t("span", ye, [
-        (o(), n("svg", _e, [
-          t("path", { d: f.value }, null, 8, xe)
+      e("span", _e, [
+        (l(), n("svg", ye, [
+          e("path", { d: m.value }, null, 8, xe)
         ]))
       ]),
-      t("div", $e, [
-        t("p", be, g(e.titulo), 1),
-        e.mensaje ? (o(), n("p", ke, g(e.mensaje), 1)) : F("", !0),
-        e.accion ? (o(), n("button", {
+      e("div", $e, [
+        e("p", be, p(t.titulo), 1),
+        t.mensaje ? (l(), n("p", ke, p(t.mensaje), 1)) : L("", !0),
+        t.accion ? (l(), n("button", {
           key: 1,
           class: "chuspita__accion",
-          onClick: y
-        }, g(e.accion), 1)) : F("", !0)
+          onClick: _
+        }, p(t.accion), 1)) : L("", !0)
       ]),
-      e.cerrable ? (o(), n("button", {
+      t.cerrable ? (l(), n("button", {
         key: 0,
         class: "chuspita__cerrar",
         "aria-label": "Cerrar",
         onClick: v
-      }, "✕")) : F("", !0),
-      e.duracion > 0 ? (o(), n("span", Se)) : F("", !0)
-    ], 38)) : F("", !0);
+      }, "✕")) : L("", !0),
+      A[0] || (A[0] = e("span", {
+        class: "chuspita__pompon chuspita__pompon--sup",
+        "aria-hidden": "true"
+      }, null, -1)),
+      A[1] || (A[1] = e("span", {
+        class: "chuspita__pompon chuspita__pompon--inf",
+        "aria-hidden": "true"
+      }, null, -1)),
+      A[2] || (A[2] = e("span", {
+        class: "chuspita__pompon chuspita__pompon--der",
+        "aria-hidden": "true"
+      }, null, -1)),
+      t.duracion > 0 ? (l(), n("span", Se)) : L("", !0)
+    ], 38)) : L("", !0);
   }
 }, Me = ["aria-label"], Ae = { class: "cargo__caja" }, Te = { class: "cargo__fila" }, Ce = { class: "cargo__valor" }, Ee = { class: "cargo__fila" }, we = { class: "cargo__valor" }, Ne = { class: "cargo__fila" }, Fe = { class: "cargo__valor" }, Le = { class: "cargo__fila" }, Re = { class: "cargo__valor" }, ze = { class: "cargo__fila" }, Ie = { class: "cargo__valor" }, Ue = {
   __name: "CargoRecepcion",
@@ -538,47 +550,47 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
     estampar: { type: Number, default: 0 }
   },
   emits: ["sellado"],
-  setup(e, { expose: x, emit: $ }) {
-    const a = e, b = $, l = M(!1);
+  setup(t, { expose: x, emit: $ }) {
+    const a = t, b = $, o = M(!1);
     let c = null;
-    const s = /* @__PURE__ */ new Date(), p = _(
+    const s = /* @__PURE__ */ new Date(), g = y(
       () => a.fecha ?? `${String(s.getDate()).padStart(2, "0")}/${String(s.getMonth() + 1).padStart(2, "0")}/${s.getFullYear()}`
-    ), i = _(
+    ), i = y(
       () => a.hora ?? `${String(s.getHours()).padStart(2, "0")}:${String(s.getMinutes()).padStart(2, "0")}`
     );
     function d() {
-      clearTimeout(c), l.value = !1, requestAnimationFrame(() => {
-        l.value = !0, b("sellado"), c = setTimeout(() => l.value = !1, 800);
+      clearTimeout(c), o.value = !1, requestAnimationFrame(() => {
+        o.value = !0, b("sellado"), c = setTimeout(() => o.value = !1, 800);
       });
     }
-    return x({ sellar: d }), L(d), E(() => a.estampar, d), (C, r) => (o(), n("div", {
-      class: z(["cargo", { "cargo--estampando": l.value }]),
-      style: w({ "--cargo-color": e.color, "--cargo-size": `${e.tamano}px` }),
+    return x({ sellar: d }), R(d), w(() => a.estampar, d), (E, r) => (l(), n("div", {
+      class: I(["cargo", { "cargo--estampando": o.value }]),
+      style: N({ "--cargo-color": t.color, "--cargo-size": `${t.tamano}px` }),
       role: "img",
-      "aria-label": `Recibido con cargo: trámite ${e.numeroTramite}`,
+      "aria-label": `Recibido con cargo: trámite ${t.numeroTramite}`,
       onClick: d
     }, [
-      t("div", Ae, [
-        r[5] || (r[5] = t("div", { class: "cargo__titulo" }, "Recibido con cargo", -1)),
-        t("div", Te, [
-          r[0] || (r[0] = t("span", { class: "cargo__etiqueta" }, "Trámite", -1)),
-          t("span", Ce, g(e.numeroTramite), 1)
+      e("div", Ae, [
+        r[5] || (r[5] = e("div", { class: "cargo__titulo" }, "Recibido con cargo", -1)),
+        e("div", Te, [
+          r[0] || (r[0] = e("span", { class: "cargo__etiqueta" }, "Trámite", -1)),
+          e("span", Ce, p(t.numeroTramite), 1)
         ]),
-        t("div", Ee, [
-          r[1] || (r[1] = t("span", { class: "cargo__etiqueta" }, "Fecha", -1)),
-          t("span", we, g(p.value), 1)
+        e("div", Ee, [
+          r[1] || (r[1] = e("span", { class: "cargo__etiqueta" }, "Fecha", -1)),
+          e("span", we, p(g.value), 1)
         ]),
-        t("div", Ne, [
-          r[2] || (r[2] = t("span", { class: "cargo__etiqueta" }, "Hora", -1)),
-          t("span", Fe, g(i.value), 1)
+        e("div", Ne, [
+          r[2] || (r[2] = e("span", { class: "cargo__etiqueta" }, "Hora", -1)),
+          e("span", Fe, p(i.value), 1)
         ]),
-        t("div", Le, [
-          r[3] || (r[3] = t("span", { class: "cargo__etiqueta" }, "Recibió", -1)),
-          t("span", Re, g(e.receptor), 1)
+        e("div", Le, [
+          r[3] || (r[3] = e("span", { class: "cargo__etiqueta" }, "Recibió", -1)),
+          e("span", Re, p(t.receptor), 1)
         ]),
-        t("div", ze, [
-          r[4] || (r[4] = t("span", { class: "cargo__etiqueta" }, "Entidad", -1)),
-          t("span", Ie, g(e.institucion), 1)
+        e("div", ze, [
+          r[4] || (r[4] = e("span", { class: "cargo__etiqueta" }, "Entidad", -1)),
+          e("span", Ie, p(t.institucion), 1)
         ])
       ])
     ], 14, Me));
@@ -600,55 +612,55 @@ const J = ["aria-label"], Y = { class: "sello__papel" }, Q = {
     estampar: { type: Number, default: 0 }
   },
   emits: ["sellado"],
-  setup(e, { expose: x, emit: $ }) {
-    const a = e, b = $, l = M(!1);
+  setup(t, { expose: x, emit: $ }) {
+    const a = t, b = $, o = M(!1);
     let c = null;
-    const s = _(() => `Pág. ${a.pagina || 1} de ${a.total}`);
-    function p() {
-      clearTimeout(c), l.value = !1, requestAnimationFrame(() => {
-        l.value = !0, b("sellado"), c = setTimeout(() => l.value = !1, 700);
+    const s = y(() => `Pág. ${a.pagina || 1} de ${a.total}`);
+    function g() {
+      clearTimeout(c), o.value = !1, requestAnimationFrame(() => {
+        o.value = !0, b("sellado"), c = setTimeout(() => o.value = !1, 700);
       });
     }
-    return x({ sellar: p }), L(p), E(() => a.estampar, p), E(() => a.pagina, p), (i, d) => (o(), n("div", {
-      class: z(["folio", { "folio--estampando": l.value }]),
-      style: w({ "--folio-color": e.color, "--folio-size": `${e.tamano}px` }),
+    return x({ sellar: g }), R(g), w(() => a.estampar, g), w(() => a.pagina, g), (i, d) => (l(), n("div", {
+      class: I(["folio", { "folio--estampando": o.value }]),
+      style: N({ "--folio-color": t.color, "--folio-size": `${t.tamano}px` }),
       role: "img",
       "aria-label": s.value,
-      onClick: p
+      onClick: g
     }, [
-      t("div", qe, g(e.documento), 1),
-      t("div", Be, [
-        t("span", De, g(s.value), 1),
-        d[0] || (d[0] = t("span", null, "Folio legalizado", -1))
+      e("div", qe, p(t.documento), 1),
+      e("div", Be, [
+        e("span", De, p(s.value), 1),
+        d[0] || (d[0] = e("span", null, "Folio legalizado", -1))
       ])
     ], 14, je));
   }
-}, R = (e, x = 24) => `data:image/svg+xml;utf8,${encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${x} ${x}">${e}</svg>`
+}, z = (t, x = 24) => `data:image/svg+xml;utf8,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${x} ${x}">${t}</svg>`
 )}`, Ge = [
   {
     nombre: "Estrella",
-    imagen: R(
+    imagen: z(
       '<path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.2l7.1-.6z" fill="#000"/>'
     )
   },
   {
     nombre: "Check",
-    imagen: R('<path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
+    imagen: z('<path d="M4 12.5l5 5L20 6.5" fill="none" stroke="#000" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>')
   },
   {
     nombre: "Corazón",
-    imagen: R(
+    imagen: z(
       '<path d="M12 21s-8.4-5.4-10.3-10C.4 7.6 2.6 4 6.2 4c2.3 0 4 1.3 5.8 3.4C13.8 5.3 15.5 4 17.8 4c3.6 0 5.8 3.6 4.5 7-1.9 4.6-10.3 10-10.3 10z" fill="#000"/>'
     )
   },
   {
     nombre: "Rayo",
-    imagen: R('<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#000"/>')
+    imagen: z('<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#000"/>')
   },
   {
     nombre: "Avión",
-    imagen: R(
+    imagen: z(
       '<path d="M21 16v-2l-8-5V3.5A1.5 1.5 0 0 0 11.5 2 1.5 1.5 0 0 0 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z" fill="#000"/>'
     )
   }
